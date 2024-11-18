@@ -3,24 +3,22 @@ import 'package:brew_crew/shared/constants.dart';
 import 'package:brew_crew/shared/loading.dart';
 import 'package:flutter/material.dart';
 
-class SignIn extends StatefulWidget {
+class Register extends StatefulWidget {
   
   final Function toggleView;
 
-  SignIn({super.key, required this.toggleView});
+  Register({super.key, required this.toggleView});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _SignInState extends State<SignIn> {
+class _RegisterState extends State<Register> {
 
-  // Create an instance of the AuthService class to access the methods
   final AuthService _auth = AuthService();
   final _formkey = GlobalKey<FormState>();
   bool loading = false;
 
-  // text field state that updates when a user types into the form
   String email = '';
   String password = '';
   String error = '';
@@ -34,15 +32,15 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         backgroundColor: Colors.brown[400],
         elevation: 0.0,
-        title: Text('Sign in to Brew Crew'),
+        title: Text('Sign up to Brew Crew'),
         actions: [
           TextButton.icon(
             onPressed: () {
-               widget.toggleView(); // remember to access the toggle from the widget level not state
+              widget.toggleView(); // remember to access the toggle from the widget level not state
             }, 
             icon: Icon(Icons.person, color: Colors.black,),
             label: Text(
-              'Register', 
+              'Sign in', 
               style: TextStyle(color: Colors.black),
               ),
             )
@@ -92,11 +90,11 @@ class _SignInState extends State<SignIn> {
 
                     setState(() => loading = true);
 
-                    dynamic result = await _auth.signInWithEmailAndPassword(email, password);
+                    dynamic result = await _auth.registerWithEmailAndPassword(email, password);
 
                     if(result == null){
                       setState(() {
-                        error = 'Invalid Credentials';
+                        error = 'inavlid email error';
                         loading = false;
                       });
                     } 
@@ -106,7 +104,7 @@ class _SignInState extends State<SignIn> {
                   backgroundColor: Colors.pink[400],
                   foregroundColor: Colors.white,
                 ),
-                child: Text('Sign in'),
+                child: Text('Register'),
                 ),
 
               SizedBox(height: 12.0,), 
@@ -115,6 +113,7 @@ class _SignInState extends State<SignIn> {
                 error,
                 style: TextStyle(color: Colors.red, fontSize: 14.0),
               )
+
             ],
           ),
         ),

@@ -12,6 +12,12 @@ class AuthService {
     return user != null ? CustomUser(uid: user.uid) : null;
   }
 
+  // auth change user stream object
+  // the Stream object will return firebase users whenever there is a hcange in authentication
+  Stream<CustomUser?> get user {
+    return _auth.authStateChanges().map(_userFromFirebaseUser);
+  }
+
   // Method: Sign In Anonymous 
   Future signInAnon() async {
     try {
@@ -26,9 +32,39 @@ class AuthService {
   }
 
   // Method: Sign In Email/Password 
+    Future signInWithEmailAndPassword(String email, String password) async {
+    try {
+      // use the _auth instance to make a request to firebase
+      UserCredential credential = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      User? user = credential.user;
+      return _userFromFirebaseUser(user);
+    } catch(e) {
+      print(e.toString());
+      return null;
+    }
+  }
 
   // Method: Register Email/Password
+  Future registerWithEmailAndPassword(String email, String password) async {
+    try {
+      // use the _auth instance to make a request to firebase
+      UserCredential credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      User? user = credential.user;
+      return _userFromFirebaseUser(user);
+    } catch(e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
 
   // Method: Sign Out
-
+  Future signOut() async {
+    try {
+      return await _auth.signOut(); //built in signout function from the firebase_auth library
+    } catch(e) {
+      print(e.toString());
+      return null;
+    }
+  }
 }
