@@ -15,7 +15,7 @@ class _BrewListState extends State<BrewList> {
   Widget build(BuildContext context) {
 
     // Access Data from stream
-    final brews = Provider.of<List<Brew>>(context) ?? [];
+    final brews = Provider.of<List<Brew>>(context);
 
     brews.forEach((brew){
       print(brew.name);

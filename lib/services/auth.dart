@@ -32,32 +32,58 @@ class AuthService {
     }
   }
 
-  // Method: Sign In Email/Password 
-    Future signInWithEmailAndPassword(String email, String password) async {
+  // // Method: Sign In Email/Password 
+  //   Future signInWithEmailAndPassword(String email, String password) async {
+  //   try {
+  //     // use the _auth instance to make a request to firebase
+  //     UserCredential credential = await _auth.signInWithEmailAndPassword(email: email, password: password);
+  //     User? user = credential.user;
+  //     return _userFromFirebaseUser(user);
+  //   } catch(e) {
+  //     print(e.toString());
+  //     return null;
+  //   }
+  // }
+
+  // // Method: Register Email/Password
+  // Future registerWithEmailAndPassword(String email, String password) async {
+  //   try {
+  //     // use the _auth instance to make a request to firebase
+  //     UserCredential credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+  //     User? user = credential.user;
+
+  //     // create a new document for the user with the uid
+  //     await DatabaseService(uid: user!.uid).updateUserData('0', 'new user', 100);
+
+  //     return _userFromFirebaseUser(user);
+  //   } catch(e) {
+  //     print(e.toString());
+  //     return null;
+  //   }
+  // }
+
+  Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      // use the _auth instance to make a request to firebase
       UserCredential credential = await _auth.signInWithEmailAndPassword(email: email, password: password);
       User? user = credential.user;
+      print('Signed in user UID: ${user?.uid}');
       return _userFromFirebaseUser(user);
-    } catch(e) {
-      print(e.toString());
+    } catch (e) {
+      print('Error signing in: $e');
       return null;
     }
   }
 
-  // Method: Register Email/Password
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
-      // use the _auth instance to make a request to firebase
       UserCredential credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = credential.user;
+      print('Registered user UID: ${user?.uid}');
 
-      // create a new document for the user with the uid
       await DatabaseService(uid: user!.uid).updateUserData('0', 'new user', 100);
-
       return _userFromFirebaseUser(user);
-    } catch(e) {
-      print(e.toString());
+    } catch (e) {
+      print('Error registering user: $e');
       return null;
     }
   }
